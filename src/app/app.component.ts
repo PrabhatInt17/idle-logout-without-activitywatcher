@@ -30,6 +30,7 @@ export class AppComponent implements OnInit  {
     //starting point to watch for inactivity
     this.maxInactivityTime = 60000 * 1;
     this.activityWatcher(this.maxInactivityTime);
+    console.log('aaaaaaaaaaaaaaaaaaaa')
     //starting point to get user session token expires in time
     this.timeoutWatcher();
     
@@ -96,6 +97,7 @@ export class AppComponent implements OnInit  {
   }
 
   clearAllActivityEvents() {
+    console.log('clearing events');
     this.activityEvents.forEach((eventName)=>{eventName.unsubscribe()});
   }
  
@@ -106,11 +108,15 @@ export class AppComponent implements OnInit  {
   //The function that will be called whenever a user is active
   const clicks$ = Observable.fromEvent(document, 'mousedown');
   const keypress$ = Observable.fromEvent(document, 'keydown');
-  var eventList = [clicks$, keypress$];
+  var eventList = [Observable.fromEvent(document, 'mousedown'), Observable.fromEvent(document, 'keydown')];
   //clicks$.subscribe(x => console.log('Calling my service here'));
-  eventList.forEach((eventName)=> {eventName.subscribe(()=> {this.lastActivity = new Date().getTime();
-  this.activityEvents.push(eventName);
-  console.log('last activity',this.lastActivity)})});
+  eventList.forEach((eventName)=> {
+    const subscriber = eventName.subscribe(
+      ()=> {this.lastActivity = new Date().getTime();
+    console.log('last activity',this.lastActivity)
+    })
+    this.activityEvents.push(subscriber);
+    });
   
 }
 
