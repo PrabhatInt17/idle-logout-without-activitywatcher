@@ -1,0 +1,27 @@
+<hello name="{{ name }}"></hello>
+
+
+<ng-template [ngIf]="!showPopup && sessionExpired">
+<div>
+  <p>Your Session has Expired</p>
+</div>
+</ng-template>
+
+<ng-template [ngIf]="showPopup && !sessionExpired">
+<div>
+  <p>You have gone idle</p>
+  <p>Time Left is {{remainingTimePopup ? remainingTimePopup : ''}}</p>
+</div>
+<div>
+  <button>Logout</button>
+  <button>Stay</button>
+</div>
+</ng-template>
+
+<ng-template [ngIf]="!showPopup && !sessionExpired">
+<div>
+  <p>Your Session is Active</p>
+</div>
+</ng-template>
+
+
