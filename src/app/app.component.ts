@@ -24,7 +24,8 @@ export class AppComponent implements OnInit  {
     this.lastActivity = new Date().getTime();
     this.showPopup = false;
     this.sessionExpired = false;
-
+    this.clearAllSessionIntervals();
+    this.clearAllActivityEvents();
 
     //starting point to watch for inactivity
     this.maxInactivityTime = 60000 * 1;
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit  {
   }
 
   timeoutWatcher() {
-    localStorage.setItem('expiresIn', '1581328560000');
+    localStorage.setItem('expiresIn', '1581330540000');
     var expiresIn = localStorage.getItem('expiresIn');
     console.log('expires in String', new Date( Number(expiresIn)));
     console.log('remaining time',new Date( Number(expiresIn)).getTime()-new Date().getTime());
@@ -55,6 +56,7 @@ export class AppComponent implements OnInit  {
       this.sessionExpired = true;
       console.log('session expired');
       this.clearAllSessionIntervals();
+      this.clearAllActivityEvents();
     }
     
   }
@@ -92,6 +94,10 @@ export class AppComponent implements OnInit  {
   clearAllSessionIntervals() {
     this.sessionIntervals.forEach(clearInterval);
   }
+
+  clearAllActivityEvents() {
+    this.activityEvents.forEach((eventName)=>{eventName.unsubscribe()});
+  }
  
     
   activityWatcher(params) {
@@ -100,11 +106,12 @@ export class AppComponent implements OnInit  {
   //The function that will be called whenever a user is active
   const clicks$ = Observable.fromEvent(document, 'mousedown');
   const keypress$ = Observable.fromEvent(document, 'keydown');
-  this.activityEvents.push(clicks$);
-  this.activityEvents.push(keypress$);
+  var eventList = [clicks$, keypress$];
   //clicks$.subscribe(x => console.log('Calling my service here'));
-  this.activityEvents.forEach((eventName)=> {eventName.subscribe(()=> {this.lastActivity = new Date().getTime();
+  eventList.forEach((eventName)=> {eventName.subscribe(()=> {this.lastActivity = new Date().getTime();
+  this.activityEvents.push(eventName);
   console.log('last activity',this.lastActivity)})});
+  
 }
 
   
