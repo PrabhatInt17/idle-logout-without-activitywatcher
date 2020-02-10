@@ -106,8 +106,8 @@ export class AppComponent implements OnInit  {
   //An array of DOM events that should be interpreted as
   //user activity.
   //The function that will be called whenever a user is active
-  const clicks$ = Observable.fromEvent(document, 'mousedown');
-  const keypress$ = Observable.fromEvent(document, 'keydown');
+  // const clicks$ = Observable.fromEvent(document, 'mousedown');
+  // const keypress$ = Observable.fromEvent(document, 'keydown');
   var eventList = [Observable.fromEvent(document, 'mousedown'), Observable.fromEvent(document, 'keydown')];
   //clicks$.subscribe(x => console.log('Calling my service here'));
   eventList.forEach((eventName)=> {
