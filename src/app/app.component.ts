@@ -156,6 +156,10 @@ function timer(callback, delay) {
     id = setTimeout(callback, remaining);
   };
 
+   this.stop = function() {
+    clearTimeout(id);
+  };
+
   this.pause = function() {
     running = false;
     clearTimeout(id);
